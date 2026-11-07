@@ -49,10 +49,10 @@ svg { display: block; }
 body.splash-active { overflow: hidden; }
 .splash-screen[hidden] { display: none; }
 .splash-screen { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; height: 100vh; height: 100dvh; background: var(--page); outline: none; overflow: hidden; }
-.splash-content { display: flex; flex-direction: column; align-items: center; padding: 30px 24px 65px; }
-.splash-label { margin: 0 0 27px; color: var(--body); font-family: var(--serif); font-size: 27px; font-weight: 400; letter-spacing: .3px; animation: splash-label-in .7s ease-out both; }
-.splash-logo { display: block; width: min(320px, 68vw); height: auto; max-height: 100px; object-fit: contain; animation: splash-logo-in 1.15s cubic-bezier(.2, .7, .2, 1) .15s both; }
-.splash-rule { width: 38px; height: 1px; margin-top: 31px; background: var(--clay); animation: splash-label-in .8s ease-out .5s both; }
+.splash-content { display: flex; flex-direction: column; align-items: center; justify-content: center; inline-size: min(380px, 100%); margin-inline: auto; padding: 0 24px 56px; text-align: center; }
+.splash-label { margin: 0 0 18px; color: var(--body); font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1; letter-spacing: .4px; animation: splash-label-in .7s ease-out both; }
+.splash-logo { display: block; width: min(320px, 68vw); height: auto; max-height: 100px; margin-inline: auto; object-fit: contain; animation: splash-logo-in 1.15s cubic-bezier(.2, .7, .2, 1) .15s both; }
+.splash-rule { width: 38px; height: 1px; margin-top: 24px; background: var(--clay); animation: splash-label-in .8s ease-out .5s both; }
 .splash-skip { position: absolute; bottom: max(28px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--body); font-size: 11px; transition: background .2s; }
 .splash-skip:hover { background: var(--footer); }
 body.splash-active .page-shell { opacity: 0; transform: translateY(36px); }

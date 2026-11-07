@@ -11,6 +11,8 @@ The header uses the Orelli header logo from `orelli.co.in` (saved locally as `as
 
 The UI adapts the Orelli website palette to light beige: page and both cards `#F5EFE6`, deep text `#1A1A1A`, borders `#DED5C8`, footer/detail panels `#EAE0D1`, and gold accent `#C9A96E` (with darker gold `#755A2E` for small text contrast). Headings use Cormorant Garamond; body text uses DM Sans.
 
+Sharing assets are included: a 1200×630 social share image (`assets/brand/social-share.png`), a favicon set (`favicon.ico`, 16/32/48 PNGs, Apple touch icon, 192/512 manifest icons), Open Graph/Twitter metadata, canonical URL, and `site.webmanifest`.
+
 ## Run
 
 Requires Node.js 18 or newer. No dependencies or build step.
@@ -23,7 +25,8 @@ Open http://localhost:3000. Set `PORT` to use another port. The server binds to 
 
 ## Interactions
 
-- On each page load, **Made for** introduces the Orelli logo with a blur fade-in. After a short hold, the splash slides up and the proposal rises into view. Use **Skip intro** or press **Escape** to enter immediately.
+- On each page load, **Made for** introduces the Orelli logo with a blur fade-in. The label is compact and centered above the logo. After a short hold, the splash slides up and the proposal rises into view. Use **Skip intro** or press **Escape** to enter immediately.
+- The landing view is reset to the top before the proposal is revealed, so the page does not open slightly scrolled after the splash.
 - Reduced-motion preferences skip the animation. Without JavaScript, the proposal remains visible and usable. Printing always hides the splash and reveals the full proposal.
 - Open individual sections with their headings; use **Expand all / Collapse all** for the complete plan.
 - **Print / Save PDF** expands every section for printing and restores the previous view afterward.

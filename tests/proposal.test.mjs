@@ -7,6 +7,8 @@ import { createStaticServer } from '../server.mjs';
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../styles.css', import.meta.url), 'utf8');
 const js = await readFile(new URL('../app.js', import.meta.url), 'utf8');
+const manifest = JSON.parse(await readFile(new URL('../site.webmanifest', import.meta.url), 'utf8'));
+const socialShare = await readFile(new URL('../assets/brand/social-share.png', import.meta.url));
 
 test('the single-brand proposal has two service cards and six accessible disclosures', () => {
   assert.equal((html.match(/<article class="service-card /g) || []).length, 2);
@@ -96,6 +98,31 @@ test('the Orelli splash has a blur fade, upward exit, and accessible motion fall
   assert.ok(js.includes("event.key === 'Escape'"));
   assert.ok(js.includes('finishSplash({ immediate: true });'));
   assert.ok(js.includes('splash.hidden = true;'));
+  assert.match(css, /\.splash-label \{[^}]*font-size: 18px;/);
+  assert.match(css, /\.splash-content \{[^}]*text-align: center;/);
+  assert.ok(js.includes("window.history.scrollRestoration = 'manual'"));
+  assert.ok(js.includes('window.scrollTo(0, 0);'));
+});
+
+test('social sharing metadata, favicons, and the web manifest are complete', () => {
+  assert.ok(html.includes('<title>Orelli × Stalite — A focused growth plan</title>'));
+  assert.ok(html.includes('<link rel="canonical" href="https://oreli-proposal.vercel.app/" />'));
+  assert.ok(html.includes('property="og:image" content="https://oreli-proposal.vercel.app/assets/brand/social-share.png"'));
+  assert.ok(html.includes('property="og:image:width" content="1200"'));
+  assert.ok(html.includes('property="og:image:height" content="630"'));
+  assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
+  assert.ok(html.includes('name="twitter:image" content="https://oreli-proposal.vercel.app/assets/brand/social-share.png"'));
+  assert.ok(html.includes('href="assets/brand/favicon.ico"'));
+  assert.ok(html.includes('href="assets/brand/favicon-16x16.png"'));
+  assert.ok(html.includes('href="assets/brand/favicon-32x32.png"'));
+  assert.ok(html.includes('href="assets/brand/apple-touch-icon.png"'));
+  assert.ok(html.includes('rel="manifest" href="site.webmanifest"'));
+  assert.equal(socialShare.readUInt32BE(16), 1200);
+  assert.equal(socialShare.readUInt32BE(20), 630);
+  assert.equal(manifest.theme_color, '#F5EFE6');
+  assert.equal(manifest.background_color, '#F5EFE6');
+  assert.ok(manifest.icons.some((icon) => icon.sizes === '192x192'));
+  assert.ok(manifest.icons.some((icon) => icon.sizes === '512x512'));
 });
 
 test('the server serves the page, local assets and safe error responses', async (t) => {
@@ -114,6 +141,15 @@ test('the server serves the page, local assets and safe error responses', async 
   const font = await fetch(`${base}/assets/fonts/dm-sans-latin.woff2`);
   assert.equal(font.status, 200);
   assert.equal(font.headers.get('content-type'), 'font/woff2');
+  const favicon = await fetch(`${base}/assets/brand/favicon.ico`);
+  assert.equal(favicon.status, 200);
+  assert.equal(favicon.headers.get('content-type'), 'image/x-icon');
+  const webmanifest = await fetch(`${base}/site.webmanifest`);
+  assert.equal(webmanifest.status, 200);
+  assert.equal(webmanifest.headers.get('content-type'), 'application/manifest+json');
+  const shareImage = await fetch(`${base}/assets/brand/social-share.png`);
+  assert.equal(shareImage.status, 200);
+  assert.equal(shareImage.headers.get('content-type'), 'image/png');
   const head = await fetch(base, { method: 'HEAD' });
   assert.equal(head.status, 200);
   assert.equal((await head.text()).length, 0);
