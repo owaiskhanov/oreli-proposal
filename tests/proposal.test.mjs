@@ -39,9 +39,13 @@ test('Orelli × Stalite branding replaces the old brand and audience copy', () =
 
 test('the social card retains the single-brand deliverables and strategy', () => {
   const social = html.split('<article class="service-card social-card"')[1].split('</article>')[0];
-  for (const content of ['15', '2–3', '17–18', '3', 'B-roll', 'lead-tracking', 'location-based SEO', 'founder-led personal branding', 'Hindi content', 'premium product showcases', 'AI presentations, models &amp; moodboards', 'not general consumers', 'No price- or discount-led promotions', 'product price segments separate', '₹25,000']) {
+  for (const content of ['10–12', '2–3', '12–15', '3', 'B-roll', 'lead-tracking', 'location-based SEO', 'founder-led personal branding', 'Hindi content', 'premium product showcases', 'AI presentations, models &amp; moodboards', 'not general consumers', 'No price- or discount-led promotions', 'product price segments separate', '₹25,000']) {
     assert.ok(social.includes(content), `Missing social scope: ${content}`);
   }
+  assert.ok(social.includes('<strong>10–12</strong><span>reels</span>'));
+  assert.ok(social.includes('<li>12–15 content pieces in total</li>'));
+  assert.ok(!social.includes('<strong>15</strong><span>reels</span>'));
+  assert.ok(!social.includes('17–18 content pieces'));
 });
 
 test('performance marketing contains exactly 10 numbered points and a fixed monthly fee', () => {
