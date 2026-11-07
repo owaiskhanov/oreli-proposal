@@ -1,0 +1,14 @@
+{
+  "name": "Orelli × Stalite — A focused growth plan",
+  "short_name": "Orelli × Stalite",
+  "description": "Social media management and performance marketing for Orelli, by Stalite.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#F5EFE6",
+  "theme_color": "#F5EFE6",
+  "icons": [
+    { "src": "assets/brand/favicon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

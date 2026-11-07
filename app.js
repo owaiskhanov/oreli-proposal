@@ -6,6 +6,7 @@ const splashSkip = document.querySelector('#splash-skip');
 const site = document.querySelector('#proposal-site');
 const proposalContent = document.querySelector('#proposal-content');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const scrollRestorationBeforeSplash = 'scrollRestoration' in window.history ? window.history.scrollRestoration : null;
 let statesBeforePrint = null;
 let splashStarted = false;
 let splashFinished = false;
@@ -13,6 +14,14 @@ let splashCleaned = false;
 let splashFocusMain = false;
 let splashTimer = 0;
 let splashExitTimer = 0;
+
+function resetScrollToTop() {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, 0);
+  root.style.scrollBehavior = previousBehavior;
+}
 
 function completeSplash(focusMain = splashFocusMain) {
   if (splashCleaned) return;
@@ -25,6 +34,11 @@ function completeSplash(focusMain = splashFocusMain) {
   if (focusMain) proposalContent.focus({ preventScroll: true });
   splash.hidden = true;
   document.body.classList.remove('splash-active', 'splash-leaving');
+  resetScrollToTop();
+  window.requestAnimationFrame(() => {
+    resetScrollToTop();
+    if (scrollRestorationBeforeSplash !== null) window.history.scrollRestoration = scrollRestorationBeforeSplash;
+  });
 }
 
 function onSplashTransitionEnd(event) {
@@ -48,8 +62,11 @@ function finishSplash({ immediate = false, focusMain = false } = {}) {
 }
 
 function startSplash() {
+  if (scrollRestorationBeforeSplash !== null) window.history.scrollRestoration = 'manual';
+  resetScrollToTop();
   if (reducedMotion.matches) {
     splash.hidden = true;
+    if (scrollRestorationBeforeSplash !== null) window.history.scrollRestoration = scrollRestorationBeforeSplash;
     return;
   }
   splashStarted = true;
